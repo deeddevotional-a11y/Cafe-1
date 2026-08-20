@@ -3,8 +3,6 @@ src
 public
 *.config.js
 *.config.ts
-package.json
-package-lock.json
 README.md
 .git
 .gitignore
@@ -14,3 +12,5 @@ README.md
 !dist
 !vercel.json
 !.vercelignore
+!package.json
+!package-lock.json
