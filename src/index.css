@@ -1,0 +1,165 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   1. Self-hosted type — a characterful display serif + a clean UI sans.
+   Swap these two files (and the names below) to change the type pairing.
+   ========================================================================== */
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   2. Runtime theme tokens.
+   These defaults are overwritten at runtime by cafe.config.js → theme.colors
+   (App.jsx writes them onto the page root as inline custom properties).
+   ========================================================================== */
+:root {
+  --c-bg: #0b0d0c;
+  --c-surface: #131715;
+  --c-surface2: #1b211e;
+  --c-line: rgba(244, 241, 233, 0.12);
+  --c-text: #f4f1e9;
+  --c-muted: #a9b0a8;
+  --c-brand: #e8a13a;
+  --c-brand-ink: #160f05;
+  --c-brand-soft: rgba(232, 161, 58, 0.14);
+  --c-accent: #3e7a66;
+
+  --c-font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --c-font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --c-radius: 14px;
+  --header-h: 68px;
+}
+
+/* Expose the tokens to Tailwind as real utilities: bg-surface, text-muted,
+   border-line, font-display, rounded-card … (`inline` keeps the var live,
+   so runtime palette swaps just work). */
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface2: var(--c-surface2);
+  --color-line: var(--c-line);
+  --color-ink: var(--c-text);
+  --color-muted: var(--c-muted);
+  --color-brand: var(--c-brand);
+  --color-brandink: var(--c-brand-ink);
+  --color-brandsoft: var(--c-brand-soft);
+  --color-accent: var(--c-accent);
+
+  --font-display: var(--c-font-display);
+  --font-body: var(--c-font-body);
+
+  --radius-card: var(--c-radius);
+}
+
+/* ==========================================================================
+   3. Base
+   ========================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--c-font-body);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Anchor targets clear the sticky header. */
+  section[id],
+  div[id] {
+    scroll-margin-top: calc(var(--header-h) + 12px);
+  }
+
+  /* One consistent, high-contrast focus ring everywhere. */
+  :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--c-brand);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--c-brand);
+    color: var(--c-brand-ink);
+  }
+}
+
+/* ==========================================================================
+   4. Tiny utility layer
+   ========================================================================== */
+@layer utilities {
+  /* Scroll-reveal (paired with the useReveal hook). */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Purposeful film grain — keeps large dark areas from banding. */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hand-drawn-ish underline for headline emphasis. */
+  .ink-underline {
+    background-image: linear-gradient(transparent 62%, var(--c-brand-soft) 62%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-inline: 0.1em;
+  }
+
+  .text-balance-tight {
+    text-wrap: balance;
+  }
+}

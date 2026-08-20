@@ -1,0 +1,16 @@
+node_modules
+src
+public
+*.config.js
+*.config.ts
+package.json
+package-lock.json
+README.md
+.git
+.gitignore
+.oxlintrc.json
+.vscode
+*.md
+!dist
+!vercel.json
+!.vercelignore
