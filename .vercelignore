@@ -1,6 +1,5 @@
 node_modules
 public
-*.config.js
 *.config.ts
 README.md
 .git
@@ -13,3 +12,4 @@ README.md
 !.vercelignore
 !package.json
 !package-lock.json
+!src/cafe.config.js
